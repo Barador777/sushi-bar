@@ -1,0 +1,53 @@
+<!-- templates/booking_modal.html -->
+<div class="modal-overlay" id="bookingModal">
+    <div class="modal-box">
+        <button type="button" class="modal-close" onclick="closeBookingModal()">×</button>
+        <h2 class="modal-title">ЗАБРОНИРОВАТЬ СТОЛИК</h2>
+
+        <form id="bookingForm" onsubmit="submitBooking(event)">
+            <input type="text" id="bk-name" class="minimal-input" placeholder="Имя" required>
+
+            <input type="tel" id="bk-phone" class="minimal-input" placeholder="+7 (___) ___-__-__" maxlength="11" minlength="11" required>
+
+            <label class="field-label">Количество гостей</label>
+            <div class="guests-row">
+                <button type="button" class="guest-btn" onclick="changeGuests(-1)">−</button>
+                <span id="guests-value">1</span>
+                <button type="button" class="guest-btn" onclick="changeGuests(1)">+</button>
+            </div>
+
+            <label class="field-label" for="bk-date">Дата посещения</label>
+            <input type="date" id="bk-date" class="minimal-input" required>
+
+            <label class="field-label" for="bk-time">Время</label>
+            <select id="bk-time" class="minimal-input" required>
+                <option value="12:00">12:00</option>
+                <option value="13:00">13:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+                <option value="17:00">17:00</option>
+                <option value="18:00">18:00</option>
+                <option value="19:00">19:00</option>
+                <option value="20:00">20:00</option>
+                <option value="21:00">21:00</option>
+            </select>
+
+            <p class="field-label">Как нам с Вами связаться для подтверждения брони?</p>
+            <label class="radio-row"><input type="radio" name="contact" value="звонок" checked> Звонок</label>
+
+            <label class="consent-row">
+                <input type="checkbox" id="bk-consent" required>
+                <span>Я прочитал и подтверждаю, что ознакомлен с
+                <a href="/privacy policy">Политикой в области обработки и защиты персональных данных</a>,
+                а также даю Согласие на обработку персональных данных</span>
+            </label>
+
+            <button type="submit" class="btn-book submit-full">ЗАБРОНИРОВАТЬ СТОЛ</button>
+        </form>
+
+        <div id="bookingSuccess" class="callback-success" style="display: none;">
+            Столик забронирован! Мы позвоним вам для подтверждения.
+        </div>
+    </div>
+</div>

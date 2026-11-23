@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню — ТОКИО СУШИ</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header class="header">
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/menu" style="opacity: 0.5;">Меню</a>
+            <a href="" class="open-booking">Забронировать</a>
+        </nav>
+        <div class="logo" onclick="window.location.href='/'">
+            <div class="logo-title">ТОКИО</div>
+            <div class="logo-subtitle">СУШИ</div>
+        </div>
+        <nav>
+            <a href="/about">О нас</a>
+            <a href="/news">Новости</a>
+            <a href="#">Доставка</a>
+            <a href="/contacts">Контакты</a>
+        </nav>
+    </header>
+
+
+    <!-- Меню -->
+    <main class="main-content">
+        <h1 class="page-title">МЕНЮ</h1>
+
+        <!-- Вкладки категорий -->
+        <div class="menu-tabs">
+            {% for cat in menu %}
+            <button class="menu-tab{% if loop.first %} active{% endif %}" data-tab="{{ cat }}">{{ cat }}</button>
+            {% endfor %}
+        </div>
+
+        {% for cat, subcats in menu.items() %}
+        <div class="menu-panel{% if not loop.first %} hidden{% endif %}" id="tab-{{ cat }}">
+
+            <!-- Лист с окантовкой и вертикальной надписью -->
+            <div class="menu-sheet">
+                <div class="sheet-title">
+                    <span>{{ cat }}</span>
+                </div>
+
+                <div class="sheet-body">
+                    {% if cat == 'SPECIAL' %}
+
+                        <!-- SPECIAL: сплошной список -->
+                        {% for sub, items in subcats.items() %}
+
+        {% if sub %}
+        <div class="subcat-header">
+            <span class="subcat-name">{{ sub }}</span>
+            <span class="subcat-line"></span>
+        </div>
+        {% endif %}
+
+        {% for item in items %}
+        <div class="menu-item">
+            <div class="item-main">
+                <span class="item-name">{{ item.name }}</span>
+                {% if item.comp %}<span class="item-comp">{{ item.comp }}</span>{% endif %}
+            </div>
+            <span class="item-price">{{ item.price }}{% if item.unit %} / {{ item.unit }}{% endif %}</span>
+        </div>
+                            {% endfor %}
+                        {% endfor %}
+
+                    {% else %}
+
+                        <!-- Остальные категории: подкатегории в 2 колонки -->
+                        {% set pairs = subcats.items() | list %}
+                        {% for i in range(0, pairs | length, 2) %}
+                        <div class="subcat-row">
+                            {% for j in [i, i + 1] %}
+                                {% if j < pairs | length %}
+                                    {% set sub = pairs[j][0] %}
+                                    {% set items = pairs[j][1] %}
+                                    <div class="subcat-col">
+                                        <div class="subcat-header">
+                                            <span class="subcat-name">{{ sub }}</span>
+                                            <span class="subcat-line"></span>
+                                        </div>
+                                        {% for item in items %}
+                                        <div class="menu-item">
+                                            <div class="item-main">
+                                                <span class="item-name">{{ item.name }}</span>
+                                                {% if item.comp %}<span class="item-comp">{{ item.comp }}</span>{% endif %}
+                                            </div>
+                                            <span class="item-price">{{ item.price }}{% if item.unit %} / {{ item.unit }}{% endif %}</span>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+
+                        <!-- Блюда без подкатегории: блок "ПРОЧЕЕ" внизу листа -->
+                        {% if '' in subcats %}
+                        <div class="subcat-header">
+                            <span class="subcat-name">ПРОЧЕЕ</span>
+                            <span class="subcat-line"></span>
+                        </div>
+                        {% for item in subcats[''] %}
+                        <div class="menu-item">
+                            <div class="item-main">
+                                <span class="item-name">{{ item.name }}</span>
+                                {% if item.comp %}<span class="item-comp">{{ item.comp }}</span>{% endif %}
+                            </div>
+                            <span class="item-price">{{ item.price }}{% if item.unit %} / {{ item.unit }}{% endif %}</span>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </main>
+
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-left">
+                <div class="footer-copyright">© 2026 TOKYOSUSHIBAR. All rights reserved</div>
+                <div class="footer-links">
+                    <a href="#">Политика конфиденциальность</a>
+                    <a href="#">Настройки cookie</a>
+                </div>
+            </div>
+
+            <div class="footer-right">
+                <div>ООО «БИДОН»</div>
+                <div>ИНН 7704336779</div>
+                <div>ОГРН 5157746081037</div>
+            </div>
+        </div>
+
+        <div class="rts-wrapper">
+            <a href="https://rts.agency" target="_blank" class="rts-badge">
+                <svg class="rts-logo-svg" viewBox="0 0 265 52" fill="none">
+                    <path d="M0 4H72C82 4 88 9 88 18C88 26 83 31 74 32L90 48H63L50 34H23V48H0V4ZM23 16V23H61C64 23 66 21.5 66 19.5C66 17.5 64 16 61 16H23Z" fill="currentColor"/>
+                    <path d="M88 4H172V16H141.5V48H118.5V16H88V4Z" fill="currentColor"/>
+                    <path d="M174 17C174 8 181 4 193 4H261V16H198C196 16 195 17 195 18.5C195 20 196 21 198 21H245C258 21 264 26 264 35C264 44 257 48 244 48H173V36H239C241 36 242 35 242 33.5C242 32 241 31 239 31H192C180 31 174 26 174 17Z" fill="currentColor"/>
+                </svg>
+                <div class="rts-caption">
+                    <span>№1</span>
+                    <span>В ТРАФИКЕ</span>
+                    <span>ДЛЯ РЕСТОРАНОВ</span>
+                </div>
+            </a>
+        </div>
+    </footer>
+
+
+    <!-- Переключение вкладок меню -->
+    <script>
+        document.querySelectorAll('.menu-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.menu-panel').forEach(p => p.classList.add('hidden'));
+                tab.classList.add('active');
+                document.getElementById('tab-' + tab.dataset.tab).classList.remove('hidden');
+            });
+        });
+    </script>
+
+
+    {% include 'booking_modal.html' %}
+    <script src="{{ url_for('static', filename='js/booking.js') }}"></script>
+</body>
+</html>

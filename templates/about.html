@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О нас — ТОКИО СУШИ</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header class="header">
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/menu">Меню</a>
+            <a href="" class="open-booking">Забронировать</a>
+        </nav>
+        <div class="logo" onclick="window.location.href='/'">
+            <div class="logo-title">ТОКИО</div>
+            <div class="logo-subtitle">СУШИ</div>
+        </div>
+        <nav>
+            <a href="/about" style="opacity: 0.5;">О нас</a>
+            <a href="/news">Новости</a>
+            <a href="#">Доставка</a>
+            <a href="/contacts">Контакты</a>
+        </nav>
+    </header>
+
+    <!-- Основной контент страницы «О нас» -->
+    <main class="main-content">
+        <h1 class="page-title">О ПРОЕКТЕ</h1>
+
+        <!-- Вступительный манифест -->
+        <section class="about-hero">
+            <h2 class="about-lead">
+                Объединяем японскую философию и ваши желания в суши-бистро «Токио» в самом сердце Ижевска
+            </h2>
+            <p class="about-sublead">Мы видим красоту в простоте, подчеркивая и так совершенное.</p>
+        </section>
+
+        <!-- Блок 1: Философия и атмосфера -->
+        <section class="about-row">
+            <div class="about-image">
+                <img src="/static/images/O nas 1.webp" alt="Минимализм и эстетика">
+            </div>
+            <div class="about-text-block">
+                <span class="about-tag">АТМОСФЕРА И ДИЗАЙН</span>
+                <h3>Эстетика ваби-саби</h3>
+                <p>Натуральные материалы, природные песочные оттенки, мягкий свет и воздух — ничего лишнего. Пространство на 60 гостей в основном зале и уединенная комната на 8 персон для камерных встреч.</p>
+                <p>Интерьер транслирует культуру японского минимализма, где каждая деталь помогает замедлиться и сосредоточиться на моменте.</p>
+            </div>
+        </section>
+
+        <!-- Блок 2: Кухня и меню (зеркальное расположение) -->
+        <section class="about-row reverse">
+            <div class="about-image">
+                <img src="/static/images/O nas 2.webp" alt="Авторские суши и роллы">
+            </div>
+            <div class="about-text-block">
+                <span class="about-tag">ГАСТРОНОМИЯ</span>
+                <h3>Чистые вкусы и тонкие настройки</h3>
+                <p>В основе — исключительно свежие рыба и морепродукты. Главный акцент сделан на суши и авторских роллах, но меню этим не ограничивается: в каждом разделе (Raw, закуски, супы и горячее) собрано всего несколько выверенных позиций.</p>
+                <p>Мы регулярно обновляем сезонные предложения, деликатно добавляя художественности каждому блюду.</p>
+                <a href="/menu" class="btn-book about-btn">ПЕРЕЙТИ В МЕНЮ</a>
+            </div>
+        </section>
+
+        <!-- Блок 3: Бар и винная карта -->
+        <section class="about-bar-section">
+            <span class="about-tag">БАР И ЭНОТЕКА</span>
+            <h3>Винная и барная карта продолжают общее настроение</h3>
+            <div class="about-bar-grid">
+                <div class="bar-card">
+                    <h4>АВТОРСКИЕ КОКТЕЙЛИ</h4>
+                    <p>Натуральные ингредиенты, кордиалы собственного приготовления и изящная игра вкусов, включая безалкогольные позиции.</p>
+                </div>
+                <div class="bar-card">
+                    <h4>КАРТА САКЕ</h4>
+                    <p>От строгой японской классики до фруктовых специалитетов, создающих гармоничную гастропару с основным меню.</p>
+                </div>
+                <div class="bar-card">
+                    <h4>БЕЛЫЕ ВИНА И ШАМПАНЬ</h4>
+                    <p>Акцент на звонкие и хрустящие белые вина: яркие рислинги, грюнеры и терруарные шампанские дома.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-left">
+                <div class="footer-copyright">© 2026 TOKYOSUSHIBAR. All rights reserved</div>
+                <div class="footer-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Настройки cookie</a>
+                </div>
+            </div>
+
+            <div class="footer-right">
+                <div>ООО «БИДОН»</div>
+                <div>ИНН 7704336779</div>
+                <div>ОГРН 5157746081037</div>
+            </div>
+        </div>
+
+        <div class="rts-wrapper">
+            <a href="https://rts.agency" target="_blank" class="rts-badge">
+                <svg class="rts-logo-svg" viewBox="0 0 265 52" fill="none">
+                    <path d="M0 4H72C82 4 88 9 88 18C88 26 83 31 74 32L90 48H63L50 34H23V48H0V4ZM23 16V23H61C64 23 66 21.5 66 19.5C66 17.5 64 16 61 16H23Z" fill="currentColor"/>
+                    <path d="M88 4H172V16H141.5V48H118.5V16H88V4Z" fill="currentColor"/>
+                    <path d="M174 17C174 8 181 4 193 4H261V16H198C196 16 195 17 195 18.5C195 20 196 21 198 21H245C258 21 264 26 264 35C264 44 257 48 244 48H173V36H239C241 36 242 35 242 33.5C242 32 241 31 239 31H192C180 31 174 26 174 17Z" fill="currentColor"/>
+                </svg>
+                <div class="rts-caption">
+                    <span>№1</span>
+                    <span>В ТРАФИКЕ</span>
+                    <span>ДЛЯ РЕСТОРАНОВ</span>
+                </div>
+            </a>
+        </div>
+    </footer>
+
+{% include 'booking_modal.html' %}
+<script src="{{ url_for('static', filename='js/booking.js') }}"></script>
+</body>
+</html>

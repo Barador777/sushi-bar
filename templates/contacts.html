@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты — ТОКИО СУШИ</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header class="header">
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/menu">Меню</a>
+            <a href="" class="open-booking">Забронировать</a>
+        </nav>
+        <div class="logo" onclick="window.location.href='/'">
+            <div class="logo-title">ТОКИО</div>
+            <div class="logo-subtitle">СУШИ</div>
+        </div>
+        <nav>
+            <a href="/about">О нас</a>
+            <a href="/news">Новости</a>
+            <a href="#">Доставка</a>
+            <a href="/contacts" style="opacity: 0.5;">Контакты</a>
+        </nav>
+    </header>
+
+
+        <!-- Основной блок контактов (минималистичная типографика + связь) -->
+    <main class="main-content">
+        <h1 class="page-title">КОНТАКТЫ</h1>
+
+        <div class="contacts-grid-minimal">
+            <!-- Левая колонка: крупные контакты и копирование адреса -->
+            <div class="contacts-details">
+                <div class="contact-item">
+                    <span class="contact-label">АДРЕС В ИЖЕВСКЕ</span>
+                    <div class="address-row">
+                        <p class="contact-big-text" id="cafeAddress">ул. Калатушкина, 67</p>
+                        <button type="button" class="copy-btn" onclick="copyAddress()" id="copyBtn">СКОПИРОВАТЬ</button>
+                    </div>
+                    <p class="contact-sub">1 этаж, отдельный вход со стороны улицы</p>
+                </div>
+
+                <div class="contact-item">
+                    <span class="contact-label">ТЕЛЕФОН ДЛЯ БРОНИ И ДОСТАВКИ</span>
+                    <a href="tel:+73412000000" class="contact-phone-link">+7 (3412) 67-67-67</a>
+                </div>
+
+                <div class="contact-item">
+                    <span class="contact-label">РЕЖИМ РАБОТЫ</span>
+                    <p class="contact-big-text">Ежедневно, 9:00 — 22:00</p>
+                </div>
+
+                <div class="contact-item">
+                    <span class="contact-label">БЫСТРАЯ СВЯЗЬ</span>
+                    <div class="contact-socials">
+                        <a href="https://t.me/Tarantagg" class="btn-book contact-btn">TELEGRAM</a>
+                        <a href="https://vk.ru/id629386003" class="btn-book contact-btn">ВКОНТАКТЕ</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: минималистичная форма обратного звонка -->
+            <div class="callback-box">
+                <h2 class="callback-title">ПЕРЕЗВОНИМ ВАМ</h2>
+                <p class="callback-desc">Оставьте номер телефона, если хотите уточнить детали по меню или согласовать проведение банкета.</p>
+
+                <form id="callbackForm" class="callback-form" onsubmit="submitCallback(event)">
+                    <input type="text" class="minimal-input" id="name-input" placeholder="Ваше имя"  required>
+                    <input type="tel" class="minimal-input" id="phone-input" placeholder="+7 (___) ___-__-__"  maxlength="11" minlength="11" required>
+                    <button type="submit" class="btn-book submit-full">ОТПРАВИТЬ ЗАЯВКУ</button>
+                </form>
+
+                <div id="callbackSuccess" class="callback-success" style="display: none;">
+                    Спасибо! Администратор свяжется с вами в течение 5 минут.
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <script>
+        // Скрипт для блокировки цифр в поле имя
+  const input = document.getElementById('name-input');
+
+  input.addEventListener('beforeinput', (event) => {
+    // Разрешаем буквы латиницы, кириллицы и пробел
+    const allowed = /^[A-Za-zA-Яа-яЁё ]*$/;
+    if (!allowed.test(event.data)) {
+      event.preventDefault(); // Блокируем ввод запрещённого символа
+    }
+  });
+    </script>
+
+    <script>
+    const phoneInput = document.getElementById('phone-input');
+
+phoneInput.addEventListener('beforeinput', (event) => {
+    if (event.data === null) return; // Backspace/Delete
+    const allowed = /^[0-9]$/;
+    if (!allowed.test(event.data)) {
+        event.preventDefault();
+    }
+});
+
+
+    </script>
+
+
+    <script>
+        function copyAddress() {
+            const addr = "г. Ижевск, " + document.getElementById("cafeAddress").innerText;
+            const btn = document.getElementById("copyBtn");
+
+            // Показываем успешное срабатывание
+            const showSuccess = () => {
+                btn.innerText = "СКОПИРОВАНО ✓";
+                setTimeout(() => { btn.innerText = "СКОПИРОВАТЬ"; }, 2000);
+            };
+
+            // Если доступен современный метод (HTTPS или localhost)
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(addr).then(showSuccess);
+            } else {
+                // Запасной способ для локального IP (http://192.168...)
+                const textArea = document.createElement("textarea");
+                textArea.value = addr;
+                textArea.style.position = "fixed";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    document.execCommand('copy');
+                    showSuccess();
+                } catch (err) {
+                    console.error('Не удалось скопировать адрес:', err);
+                }
+
+                document.body.removeChild(textArea);
+            }
+        }
+
+        function submitCallback(e) {
+            e.preventDefault();
+            document.getElementById("callbackForm").style.display = "none";
+            document.getElementById("callbackSuccess").style.display = "block";
+        }
+    </script>
+
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-left">
+                <div class="footer-copyright">© 2026 TOKYOSUSHIBAR. All rights reserved</div>
+                <div class="footer-links">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Настройки cookie</a>
+                </div>
+            </div>
+
+            <div class="footer-right">
+                <div>ООО «БИДОН»</div>
+                <div>ИНН 7704336779</div>
+                <div>ОГРН 5157746081037</div>
+            </div>
+        </div>
+
+        <div class="rts-wrapper">
+            <a href="https://rts.agency" target="_blank" class="rts-badge">
+                <svg class="rts-logo-svg" viewBox="0 0 265 52" fill="none">
+                    <path d="M0 4H72C82 4 88 9 88 18C88 26 83 31 74 32L90 48H63L50 34H23V48H0V4ZM23 16V23H61C64 23 66 21.5 66 19.5C66 17.5 64 16 61 16H23Z" fill="currentColor"/>
+                    <path d="M88 4H172V16H141.5V48H118.5V16H88V4Z" fill="currentColor"/>
+                    <path d="M174 17C174 8 181 4 193 4H261V16H198C196 16 195 17 195 18.5C195 20 196 21 198 21H245C258 21 264 26 264 35C264 44 257 48 244 48H173V36H239C241 36 242 35 242 33.5C242 32 241 31 239 31H192C180 31 174 26 174 17Z" fill="currentColor"/>
+                </svg>
+                <div class="rts-caption">
+                    <span>№1</span>
+                    <span>В ТРАФИКЕ</span>
+                    <span>ДЛЯ РЕСТОРАНОВ</span>
+                </div>
+            </a>
+        </div>
+    </footer>
+    <script>
+    function submitCallback(e) {
+  e.preventDefault();
+  const form = document.getElementById("callbackForm");
+  const nameInput = document.getElementById("name-input");
+  const phoneInput = document.getElementById("phone-input");
+
+  const payload = {
+    name: nameInput.value.trim(),
+    // Оставляем только цифры. Если пользователь ввел +7..., останется 7...
+    phone: phoneInput.value.replace(/\D/g, "")
+  };
+
+  // Отправляем на /callback
+  fetch('/callback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+    .then(res => {
+      if (!res.ok) throw new Error('Ошибка сети');
+      return res.json();
+    })
+    .then(data => {
+      if (data.success) {
+        form.style.display = 'none';
+        document.getElementById("callbackSuccess").style.display = 'block';
+      } else {
+        alert('Не удалось сохранить заявку: ' + (data.error || 'Неизвестная ошибка'));
+      }
+    })
+    .catch(() => {
+      alert('Произошла ошибка при отправке. Проверьте консоль или попробуйте позже.');
+    });
+}
+    </script>
+
+
+{% include 'booking_modal.html' %}
+<script src="{{ url_for('static', filename='js/booking.js') }}"></script>
+</body>
+</html>

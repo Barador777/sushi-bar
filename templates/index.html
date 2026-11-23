@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Суши-бистро</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav-left">
+            <a href="/">Главная</a>
+            <a href="/menu">Меню</a>
+            <a href="" class="open-booking">Забронировать</a>
+        </nav>
+
+        <div class="logo" onclick="window.location.href='/'">
+            <div class="logo-title">ТОКИО</div>
+            <div class="logo-subtitle">СУШИ</div>
+        </div>
+
+        <nav class="nav-right">
+            <a href="/about">О нас</a>
+            <a href="/news">Новости</a>
+            <a href="#">Доставка</a>
+            <a href="/contacts">Контакты</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="gallery">
+            <div class="photo-card card-side">
+                <img src="/static/images/main menu 1.1.webp" class="slide active" alt="Интерьер">
+                <img src="/static/images/main menu 1.2.webp" class="slide" alt="Блюдо">
+            </div>
+
+            <div class="photo-card card-center">
+                <img src="/static/images/main menu 2.1.webp" class="slide active" alt="Барная стойка">
+                <img src="/static/images/main menu 2.2.webp" class="slide" alt="Подача">
+            </div>
+
+            <div class="photo-card card-side">
+                <img src="/static/images/main menu 3.1.webp" class="slide active" alt="Зал">
+                <img src="/static/images/main menu 3.2.webp" class="slide" alt="Детали">
+            </div>
+        </div>
+
+        <p class="tagline">- Это о культуре еды по-японски, философии минимализма и высоком мастерстве</p>
+
+        <button class="btn-book open-booking">ЗАБРОНИРОВАТЬ</button>
+
+        <p class="address">Ижевск, ул. Калатушкина, 67</p>
+    </main>
+
+    <!-- Скрипт для плавной смены картинок -->
+    <script>
+        document.querySelectorAll('.photo-card').forEach((card, index) => {
+            const slides = card.querySelectorAll('.slide');
+            let current = 0;
+
+            // Запускаем смену каждые 5 секунд с небольшой задержкой для каждой колонки
+            setTimeout(() => {
+                setInterval(() => {
+                    slides[current].classList.remove('active');
+                    current = (current + 1) % slides.length;
+                    slides[current].classList.add('active');
+                }, 5000);
+            }, index * 800);
+        });
+    </script>
+
+{% include 'booking_modal.html' %}
+<script src="{{ url_for('static', filename='js/booking.js') }}"></script>
+
+</body>
+</html>
