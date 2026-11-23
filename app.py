@@ -182,6 +182,95 @@ def debug_tables():
     """http://192.168.0.194:5000/debug-tables"""
 '''
 
+@app.route('/delivery')
+def delivery_page():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "SELECT [Категория], [Подкатегория], [Название], [Состав], [Цена], [Единица] "
+        "FROM menu ORDER BY [Категория], [Подкатегория], [Id]"
+    )
+    rows = cursor.fetchall()
+    conn.close()
+
+    menu_data = {}
+
+    for row in rows:
+        cat, sub, name_ru, comp, price, unit = row
+
+        if not cat and not name_ru:
+            continue
+
+        if cat not in menu_data:
+            menu_data[cat] = []
+
+        menu_data[cat].append({
+            'name': name_ru,
+            'comp': comp or '',
+            'price': price,
+            'unit': unit or ''
+        })
+
+    order = ['КУХНЯ', 'SPECIAL', 'БАР', 'ВИНО']
+    menu_data = {cat: menu_data[cat] for cat in order if cat in menu_data}
+
+    return render_template('delivery.html', menu=menu_data)
+
+
+@app.route('/order', methods=['POST'])
+def make_order():
+    data = request.get_json()
+
+    required = ['name', 'phone', 'address', 'items']
+    for field in required:
+        if not data.get(field):
+            return jsonify({'success': False, 'error': f'Не заполнено: {field}'})
+
+    items = data['items']
+    if not isinstance(items, list) or len(items) == 0:
+        return jsonify({'success': False, 'error': 'Корзина пуста'})
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # 1. Сохраняем пользователя (User_basket)
+        cursor.execute(
+            "INSERT INTO [User_basket] "
+            "([Имя], [Телефон], [Адрес доставки], [Кв/офис], [Домофон], [Подъезд], [Этаж], [Комментарий]) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                data.get('name', ''),
+                data.get('phone', ''),
+                data.get('address', ''),
+                data.get('apartment', ''),
+                data.get('intercom', ''),
+                data.get('entrance', ''),
+                data.get('floor', ''),
+                data.get('comment', '')
+            )
+        )
+
+        # 2. Достаём Id_user только что вставленной строки
+        cursor.execute("SELECT @@IDENTITY")
+        id_user = cursor.fetchone()[0]
+
+        # 3. По строке на позицию в basket
+        for item in items:
+            cursor.execute(
+                "INSERT INTO [basket] ([Id_user], [Название продукта], [Кол-во], [Цена корзины]) "
+                "VALUES (?, ?, ?, ?)",
+                (id_user, item['name'], item['qty'], item['qty'] * item['price'])
+            )
+
+        conn.commit()
+        conn.close()
+
+        return jsonify({'success': True})
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     if not DB_PATH.exists():
