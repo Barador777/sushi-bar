@@ -272,6 +272,36 @@ def make_order():
         return jsonify({'success': False, 'error': str(e)}), 500
 
 
+@app.route('/admin15095')
+def admin():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        def execute(sql):
+            cursor.execute(sql)
+            return cursor.fetchall()
+
+        menu_rows = execute("SELECT * FROM [menu] ORDER BY [Категория], [Id]")
+        basket_rows = execute("SELECT * FROM [basket]")
+        booking_rows = execute("SELECT * FROM [booking]")
+        user_basket_rows = execute("SELECT * FROM [User_basket]")
+        callback_rows = execute("SELECT * FROM [Callback]")
+
+        conn.close()
+
+        return render_template(
+            'admin.html',
+            menu_rows=menu_rows,
+            basket_rows=basket_rows,
+            booking_rows=booking_rows,
+            user_basket_rows=user_basket_rows,
+            callback_rows=callback_rows
+        )
+    except Exception as e:
+        return f"Ошибка: {e}"
+
+
 if __name__ == '__main__':
     if not DB_PATH.exists():
         print(f"Ошибка: Файл базы данных не найден по пути: {DB_PATH}")
