@@ -80,7 +80,7 @@
 ## Как запустить
 
 1. Сделать пустой Python проект.
-2. Клонировать папки database, templates, static к себе в Python проект.
+2. Клонировать папки database, templates, static и файл app.py к себе в Python проект.
 3. Установить Python библиотеки: pip install flask pyodbc
 4. Запустить: `python app.py`.
 5. Открыть в браузере: http://localhost:5000
