@@ -90,3 +90,4 @@
 ### Структура
 <img width="1159" height="572" alt="{FC65FE36-F5E8-49E6-A956-9DB77C7579DE}" src="https://github.com/Barador777/sushi-bar/blob/main/%D0%A1%D1%83%D1%88%D0%B8-%D0%B1%D0%B0%D1%80.png?raw=true" />
 
+### Учебный проект для техникума.
